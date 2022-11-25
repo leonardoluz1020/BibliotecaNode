@@ -1,16 +1,17 @@
-import chalk from 'chalk';
 import fs from 'fs';
+import chalk from 'chalk';
 
-function tratarErro(error) {
-    throw new Error(chalk.red(error.code, 'Não há arquivo no diretório'))
+function tratarErro(error){
+    throw new Error(chalk.red(error.code, 'Não há arquivo no diretorio'))
 }
 
-function extrairLinks(texto) {
+function extrairLinks(texto){
     const regex = /\[([^[\]]*?)\]\((https?:\/\/[^\s?#.].[^\s]*)\)/gm
     const capturas = [...texto.matchAll(regex)]
-    const resultados = capturas.map((captura) => ({ [captura[1]]: captura[2] }))
-    return resultados.length !== 0 ? resultados : 'Não há links no texto';
+    const resultado = capturas.map((captura) => ({[captura[1]]: captura[2]}))
+    return resultado.length !== 0 ? resultado: 'Lista sem Links';
 }
+
 
 async function pegarArquivo(caminho) {
     try {
@@ -19,11 +20,12 @@ async function pegarArquivo(caminho) {
         return extrairLinks(texto)
     } catch (error) {
         tratarErro(error)
+
     }
 }
 
-
 export default pegarArquivo;
+
 
 // expressões regulares para pegar os links do arquivos
 //  /\[([^[\]]*?)\]\((https?:\/\/[^\s?#.].[^\s]*)\)/gm
