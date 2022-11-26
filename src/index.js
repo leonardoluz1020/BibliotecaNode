@@ -1,30 +1,30 @@
-import fs from 'fs';
 import chalk from 'chalk';
-
-function tratarErro(error){
-    throw new Error(chalk.red(error.code, 'Não há arquivo no diretorio'))
-}
+import fs from 'fs';
 
 function extrairLinks(texto){
     const regex = /\[([^[\]]*?)\]\((https?:\/\/[^\s?#.].[^\s]*)\)/gm
     const capturas = [...texto.matchAll(regex)]
-    const resultado = capturas.map((captura) => ({[captura[1]]: captura[2]}))
-    return resultado.length !== 0 ? resultado: 'Lista sem Links';
+    const resultados = capturas.map((captura) => ({[captura[1]]: captura[2]}))
+    return resultados.length !== 0 ? resultados: 'Não há links no arquivo' 
 }
 
+function trataErro(error){
+    throw new Error(chalk.red(error.code, 'Não há arquivo no diretório'))
+}
 
-async function pegarArquivo(caminho) {
-    try {
+async function pegarArquivo(caminho){
+    try{
         const encoding = 'utf-8'
         const texto = await fs.promises.readFile(caminho, encoding)
         return extrairLinks(texto)
-    } catch (error) {
-        tratarErro(error)
-
+    }catch(error){
+        trataErro(error)
     }
 }
 
 export default pegarArquivo;
+
+pegarArquivo('./arquivos/texto.md')
 
 
 // expressões regulares para pegar os links do arquivos
