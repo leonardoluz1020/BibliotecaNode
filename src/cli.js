@@ -4,13 +4,13 @@ import pegarArquivo from './index.js'
 import listaValidada from './http.js'
 const caminho = process.argv
 
-function imprimiLista(valida, lista, arquvivo = '') {
+async function imprimiLista(valida, lista, arquvivo = '') {
     
     if (valida) {
         console.log(
             chalk.yellow('Lista validada'),
             chalk.black.bgBlue(arquvivo),
-            listaValidada(lista)
+           await listaValidada(lista)
         )
     }else{
         console.log(
