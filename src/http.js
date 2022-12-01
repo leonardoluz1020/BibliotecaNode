@@ -1,4 +1,3 @@
-import chalk from "chalk";
 
 function extraiLinks(arrLinks) {
     return arrLinks.map((objLinks) => Object.values(objLinks).join())

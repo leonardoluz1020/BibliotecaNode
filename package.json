@@ -7,8 +7,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "cli": "node src/cli.js ./arquivos/",
-    "cli:valida": "node src/cli-clone.js ./arquivos/ --valida",
-    "cli:valida-origin": "node src/cli.js ./arquivos/ --valida"
+    "cli-clone": "node src/cli-clone.js ./arquivos/",
+    "cli:valida": "node src/cli.js ./arquivos/ --valida",
+    "cli-clone:valida": "node src/cli-clone.js ./arquivos/ --valida"
     },
   "repository": {
     "type": "git",
