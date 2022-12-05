@@ -1,46 +1,36 @@
-import fs from 'fs';
 
-function extrairLinks(lista) {
-    return lista.map((obj) => Object.values(obj).join())
+function extrairLinks(lista){
+    return lista.map((objValor) => Object.values(objValor).join())
 }
-async function validarStatus(arrLinks) {
-    const resultados = await Promise.all(
-        arrLinks.map(async (url) => {
 
-            try {
-                const response = await fetch(url)
-                return response.status
-            } catch (error) {
-                if (error.cause.code === 'ENOTFOUND')
-                    return `Link não encontrado !`
-                else {
-                    return `Não foi possivel identificar o erro!`
-                }
-            }
+function remanejarErro(error){
+    if(error.cause.code === 'ENOTFOUND'){
+        return `Link não encontrado`
+    }else{
+        return `Não foi possivel identificar o erro!`
+    }
+}
+
+async function validarStatus(arrlinks){
+    const resultado = await Promise.all(
+        arrlinks.map(async(url) => {
+           try {
+            const response = await fetch(url)
+            return response.status
+           } catch (error) {               
+            return remanejarErro(error)          
+           }
         })
     )
-    return resultados
+    return resultado
 }
 
 
-
-export default async function listaValidada(lista) {
-    const arrLinks = extrairLinks(lista)
-    const status = await validarStatus(arrLinks)
+export default async function listaValidada(lista){
+    const arrlinks = extrairLinks(lista)
+    const status = await validarStatus(arrlinks)
     return lista.map((obj, indice) => ({
         ...obj,
         status: status[indice]
     }))
 }
-
-
-/* { chave: valor }, { chave: valor }, { chave: valor },}
-      indice 0        indice 1         indice 2
-lista.map( ( obj ) => Object.values(obj).join() )
-
-sem join =>  [link] [link] [link]
-
-com join (junte) => [ link, link, link ]
-
-
-*/
