@@ -1,47 +1,47 @@
 import chalk from 'chalk';
 import fs from 'fs';
-import pegarArquivo from './index2.js';
+import pegarArquivo from './index2.js'
 import listaValidada from './validacao-http.js'
 
 const caminho = process.argv
 
-
-async function imprimirLista(valida ,lista, arquivo = '') {
+async function imprimirLista(valida,listas, nomeArquivo = 'arquivo'){
     if(valida){
         console.log(
             chalk.yellow('Lista de links'),
-            chalk.bgBlue(arquivo),
-           await listaValidada(lista)
+            chalk.bgBlue(nomeArquivo),
+           await listaValidada(listas)
         )
-    }else{
+    }else{ 
         console.log(
             chalk.yellow('Lista de links'),
-            chalk.bgBlue(arquivo),
-            lista
+            chalk.bgBlue(nomeArquivo),
+            listas
         )
-    }    
+    }
 }
 
-async function processarTexto(argumento) {
+async function processarTexto(argumento){
     const caminho = argumento[2]
     const valida = argumento[3] === '--valida';
     try {
         fs.lstatSync(caminho)
     } catch (error) {
         if (error.code === 'ENOENT') {
-            console.log(chalk.red('Caminho de pasta ou arquivo errado!'))
+            console.log(chalk.red('Caminho de arquivo ou pasta invalido!'))
         }
         return
     }
 
-    if (fs.lstatSync(caminho).isFile()) {
+
+    if (fs.lstatSync(caminho).isFile()){
         const lista = await pegarArquivo(caminho)
         imprimirLista(valida,lista)
-    } else if (fs.lstatSync(caminho).isDirectory()) {
+    }else if(fs.lstatSync(caminho).isDirectory()){
         const arquivos = await fs.promises.readdir(caminho)
-        arquivos.forEach(async (nomeArquivo) => {
+        arquivos.forEach(async(nomeArquivo) => {
             const listas = await pegarArquivo(`${caminho}/${nomeArquivo}`)
-            imprimirLista(valida,listas, nomeArquivo)
+            imprimirLista(valida ,listas, nomeArquivo)
         })
     }
 }
