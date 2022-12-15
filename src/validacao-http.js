@@ -1,12 +1,12 @@
 function extrairLinks(lista) {
-    return lista.map((chave) => Object.values(chave).join())
+    return lista.map((listLinks) => Object.values(listLinks).join())
 }
 
-function remanejarErro(error) {
-    if (error.cause.code === 'ENOTFOUND') {
-        return `Link não encontrado!`
-    } else {
-        return `Algo deu errado!`
+function remanejarErro(error){
+    if(error.cause.code === 'ENOTFOUND'){
+        return `Link não encontrado!.`
+    }else{
+        return `Não é possivel identificar o erro!.`
     }
 }
 
@@ -23,12 +23,12 @@ async function statusLinks(arrLinks) {
     )
 }
 
-
 export default async function listaValidada(lista) {
     const arrLinks = extrairLinks(lista)
     const status = await statusLinks(arrLinks)
-    return lista.map((obj,indice) => ({
+    return lista.map((obj, indice) => ({
         ...obj,
-        Status: status[indice]
+        status: status[indice]
     }))
 }
+
